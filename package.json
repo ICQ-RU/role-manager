@@ -1,0 +1,24 @@
+{
+  "name": "k0r4ll-bot",
+  "version": "1.0.0",
+  "description": "Role-giving bot for Discord",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "discord",
+    "role",
+    "bot"
+  ],
+  "type": "module",
+  "author": "brizgalka",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "discord.js": "^14.5.0",
+    "dotenv": "^16.0.3"
+  }
+}
