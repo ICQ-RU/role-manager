@@ -1,10 +1,11 @@
 {
   "name": "k0r4ll-bot",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Role-giving bot for Discord",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "keywords": [
     "discord",

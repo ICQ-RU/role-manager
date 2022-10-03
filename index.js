@@ -2,44 +2,50 @@ import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import * as dotenv from 'dotenv';
 import coms from './commands.js'
 
+// Initialization
 dotenv.config();
 const bot = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 bot.once('ready', () => {
-    console.log('Бот запущен!');
+    console.log('Bot started!');
 });
 
+// Collection of bot commands
 bot.commands = new Collection();
 
+// Asynchronous function, executed by the commands
 async function exec(interaction) {
-    if (interaction.member.roles.cache.has(coms[interaction.commandName])) {
-        await interaction.member.roles.remove(coms[interaction.commandName])
-        await interaction.reply(`Вы были лишены роли ${interaction.guild.roles.cache.get(coms[interaction.commandName]).name}`)
+    const role = coms[interaction.commandName];
+    if (interaction.member.roles.cache.has(role)) { // If member has the role with ID listed in 'commands.js'
+        await interaction.member.roles.remove(role) // We remove this role from them
+        await interaction.reply(`You were stripped of the role ${interaction.guild.roles.cache.get(role).name}`) // Reply them
+        console.log(`${interaction.user.username} was stripped of the role ${interaction.guild.roles.cache.get(role).name}`) // Log it
     } else {
-        await interaction.member.roles.add(coms[interaction.commandName])
-        await interaction.reply(`Вам была выдана роль ${interaction.guild.roles.cache.get(coms[interaction.commandName]).name}`)
+        await interaction.member.roles.add(role) // We add this role to them
+        await interaction.reply(`You've been assigned the role ${interaction.guild.roles.cache.get(role).name}`)
+        console.log(`${interaction.user.username} was assigned the role ${interaction.guild.roles.cache.get(role).name}`)
     }
 }
 
+// Command initialization cycle gets all commands from 'commands.js' and adds it to Collection along with the 'exec()' function
 for (var com in coms) {
-    console.log(`${com}: ${coms[com]}`)
     bot.commands.set(com, exec);
 };
 
+// Event handler
 bot.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
-	const command = bot.commands.get(interaction.commandName);
+	const execute = bot.commands.get(interaction.commandName); // Gets a function that matches command name from 'bot.commands' Collection
 
-	if (!command) return;
+	if (!execute) return;
 
 	try {
-		await command(interaction);
+		await execute(interaction); // Executes the function with given parameter
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		await interaction.reply({ content: 'An error occured while executing this command!', ephemeral: true });
 	}
 });
 
-
-bot.login(process.env.TOKEN);
+member
