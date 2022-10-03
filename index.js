@@ -47,3 +47,5 @@ bot.on('interactionCreate', async interaction => {
 		await interaction.reply({ content: 'An error occured while executing this command!', ephemeral: true });
 	}
 });
+
+bot.login(process.env.TOKEN);
